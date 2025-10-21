@@ -25,19 +25,19 @@ const EMPTY_STAR = '☆';
 const FULL_STAR = '★';
 
 // DOM Elements
-const recipeForm = document.getElementById('recipe-form') as HTMLFormElement;
-const recipeNameInput = document.getElementById('recipe-name') as HTMLInputElement;
-const recipeIngredientsInput = document.getElementById('recipe-ingredients') as HTMLTextAreaElement;
-const recipeInstructionsInput = document.getElementById('recipe-instructions') as HTMLTextAreaElement;
-const recipeRatingStarsContainer = document.getElementById('recipe-rating-stars') as HTMLDivElement;
+const recipeForm = document.getElementById('recipe-form');
+const recipeNameInput = document.getElementById('recipe-name');
+const recipeIngredientsInput = document.getElementById('recipe-ingredients');
+const recipeInstructionsInput = document.getElementById('recipe-instructions');
+const recipeRatingStarsContainer = document.getElementById('recipe-rating-stars');
 
-const recipesContainer = document.getElementById('recipes-container') as HTMLDivElement;
-const suggestRecipeBtn = document.getElementById('suggest-recipe-btn') as HTMLButtonElement;
-const suggestedRecipeDisplay = document.getElementById('suggested-recipe-display') as HTMLDivElement;
+const recipesContainer = document.getElementById('recipes-container');
+const suggestRecipeBtn = document.getElementById('suggest-recipe-btn');
+const suggestedRecipeDisplay = document.getElementById('suggested-recipe-display');
 
-const formSectionHeading = document.getElementById('form-section-heading') as HTMLHeadingElement;
-const formSubmitBtn = document.getElementById('form-submit-btn') as HTMLButtonElement;
-const cancelEditBtn = document.getElementById('cancel-edit-btn') as HTMLButtonElement;
+const formSectionHeading = document.getElementById('form-section-heading');
+const formSubmitBtn = document.getElementById('form-submit-btn');
+const cancelEditBtn = document.getElementById('cancel-edit-btn');
 
 const INITIAL_SUGGESTIONS_COUNT = 5;
 let showingAllSuggestions = false;
@@ -118,7 +118,7 @@ async function loadRecipesFromFirestore(): Promise<void> {
   if(recipesContainer) recipesContainer.innerHTML = '<p>Loading recipes...</p>';
   try {
     const snapshot = await db.collection(FIRESTORE_COLLECTION_NAME).orderBy("name").get();
-    recipes = snapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() } as Recipe));
+    recipes = snapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() }));
     renderRecipes();
     showingAllSuggestions = false;
     handleSuggestRecipe();
@@ -235,7 +235,7 @@ function renderFormRatingStars(rating: number): void {
 
 function setupStarRatingInput(): void {
   recipeRatingStarsContainer.addEventListener('click', (event) => {
-    const target = event.target as HTMLElement;
+    const target = event.target;
     if (target.classList.contains('star-input')) {
       const value = parseInt(target.getAttribute('data-value') || '0', 10);
       renderFormRatingStars(value);
@@ -243,7 +243,7 @@ function setupStarRatingInput(): void {
   });
 
   recipeRatingStarsContainer.addEventListener('mouseover', (event) => {
-    const target = event.target as HTMLElement;
+    const target = event.target;
     if (target.classList.contains('star-input')) {
       const hoverValue = parseInt(target.getAttribute('data-value') || '0', 10);
       const stars = recipeRatingStarsContainer.querySelectorAll('.star-input');
@@ -264,7 +264,7 @@ function setupStarRatingInput(): void {
   });
   
   recipeRatingStarsContainer.addEventListener('keydown', (event) => {
-    const target = event.target as HTMLElement;
+    const target = event.target;
     if (target.classList.contains('star-input') && (event.key === 'Enter' || event.key === ' ')) {
         event.preventDefault();
         const value = parseInt(target.getAttribute('data-value') || '0', 10);
@@ -401,7 +401,7 @@ function handleRecipeAction(event: Event): void {
   } else if (target.classList.contains('toggle-details')) {
     const cardElement = target.closest('.recipe-card');
     if (cardElement instanceof HTMLElement) {
-      const details = cardElement.querySelector('.recipe-card-details') as HTMLElement;
+      const details = cardElement.querySelector('.recipe-card-details');
       if (details) {
           const isCurrentlyHidden = details.classList.toggle('hidden');
           const detailsVisibleLocalStorageKey = `recipeDetailsVisible_${recipeId}`;
@@ -527,8 +527,8 @@ async function initializeApp(): Promise<void> {
       if (recipeCard) {
         recipeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
-        const details = recipeCard.querySelector('.recipe-card-details') as HTMLElement;
-        const toggleButton = recipeCard.querySelector('.toggle-details') as HTMLButtonElement;
+        const details = recipeCard.querySelector('.recipe-card-details');
+        const toggleButton = recipeCard.querySelector('.toggle-details');
         
         if (details && toggleButton && details.classList.contains('hidden')) {
             toggleButton.click(); // This will trigger the existing logic in handleRecipeAction
@@ -537,7 +537,7 @@ async function initializeApp(): Promise<void> {
     };
 
     suggestedRecipeDisplay.addEventListener('click', (event) => {
-      const target = event.target as HTMLElement;
+      const target = event.target;
       const suggestionItem = target.closest('.suggestion-item');
       if (suggestionItem instanceof HTMLElement && suggestionItem.dataset.recipeId) {
         handleSuggestionInteraction(suggestionItem.dataset.recipeId);
@@ -545,7 +545,7 @@ async function initializeApp(): Promise<void> {
     });
 
     suggestedRecipeDisplay.addEventListener('keydown', (event) => {
-      const target = event.target as HTMLElement;
+      const target = event.target;
       if (target.classList.contains('suggestion-item') && (event.key === 'Enter' || event.key === ' ')) {
         event.preventDefault();
         if (target.dataset.recipeId) {
